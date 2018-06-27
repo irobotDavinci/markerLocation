@@ -44,7 +44,7 @@ public:
   Mat m_thresholdImg;
   Mat canonicalMarkerImage;
 
-  vector<Transformation> m_transformations;
+  //vector<Transformation> m_transformations;
 
   float m_minContourLengthAllowed;
 };

@@ -2,7 +2,6 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
-#include "GeometryTypes.hpp"
 
 using namespace cv;
 using namespace std;
