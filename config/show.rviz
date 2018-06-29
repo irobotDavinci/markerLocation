@@ -4,11 +4,13 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /Global Options1
-        - /Status1
-        - /Odometry1/Status1
         - /Odometry1/Shape1
         - /Odometry1/Covariance1/Position1
+        - /TF1
+        - /TF1/Frames1
+        - /TF1/Frames1/camera1
+        - /TF1/Frames1/camera1/Position1
+        - /TF1/Frames1/camera1/Orientation1
       Splitter Ratio: 0.5
     Tree Height: 747
   - Class: rviz/Selection
@@ -29,7 +31,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud
+    SyncSource: ""
 Visualization Manager:
   Class: ""
   Displays:
@@ -68,7 +70,7 @@ Visualization Manager:
           Scale: 1
           Value: true
         Value: true
-      Enabled: true
+      Enabled: false
       Keep: 1
       Name: Odometry
       Position Tolerance: 0.00999999978
@@ -84,7 +86,7 @@ Visualization Manager:
         Value: Axes
       Topic: /odom
       Unreliable: true
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -115,13 +117,6 @@ Visualization Manager:
       Use Fixed Frame: true
       Use rainbow: true
       Value: false
-    - Class: rviz/Axes
-      Enabled: true
-      Length: 0.100000001
-      Name: WorldFrame
-      Radius: 0.00999999978
-      Reference Frame: <Fixed Frame>
-      Value: true
     - Alpha: 0.5
       Cell Size: 0.100000001
       Class: rviz/Grid
@@ -158,6 +153,26 @@ Visualization Manager:
       Plane Cell Count: 20
       Reference Frame: <Fixed Frame>
       Value: true
+    - Class: rviz/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+        camera:
+          Value: true
+        world:
+          Value: true
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        world:
+          camera:
+            {}
+      Update Interval: 0
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -183,7 +198,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.05747318
+      Distance: 3.87030482
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
@@ -198,10 +213,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.909796953
+      Pitch: 0.745203257
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.19359922
+      Yaw: 1.39859641
     Saved: ~
 Window Geometry:
   Displays:

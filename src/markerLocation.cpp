@@ -10,6 +10,7 @@
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/PointCloud.h>
 #include <visualization_msgs/Marker.h>
+#include <tf/transform_broadcaster.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/image_encodings.h>
 #include <cv_bridge/cv_bridge.h>
@@ -29,6 +30,7 @@ int imageheight;
 ros::Publisher pub_odom;
 ros::Publisher pub_pose;
 ros::Publisher pub_marker;
+ros::Publisher pub_tf;
 
 //旋转矩阵得到四元数
 cv::Mat Matrix2Quaternion(cv::Mat matrix)
@@ -77,6 +79,24 @@ cv::Mat Matrix2Quaternion(cv::Mat matrix)
   return cv::Mat(4,1,CV_32FC1,q).clone();
 }
 
+void pubTF(std_msgs::Header header,Mat Q,Mat t)
+{
+    static tf::TransformBroadcaster br;
+    tf::Transform transform;
+    tf::Quaternion q;
+
+    // camera frame
+    transform.setOrigin(tf::Vector3(t.at<float>(0),t.at<float>(1),t.at<float>(2)));
+    
+    q.setW(Q.at<float>(0));
+    q.setX(Q.at<float>(1));
+    q.setY(Q.at<float>(2));
+    q.setZ(Q.at<float>(3));
+    transform.setRotation(q);
+    br.sendTransform(tf::StampedTransform(transform, header.stamp, "world", "camera"));
+}
+
+
 void publishResult(vector<Point3f> markerCorners, Mat Rvec, Mat T)
 {
   Mat RMat,J;
@@ -107,8 +127,10 @@ void publishResult(vector<Point3f> markerCorners, Mat Rvec, Mat T)
     pd.points.push_back(p);
   }
   pub_marker.publish(pd);
-  
+
+  pubTF(odometry.header,q,t);
 }
+
 
 void img_callback(const sensor_msgs::ImageConstPtr &img_msg)
 {
