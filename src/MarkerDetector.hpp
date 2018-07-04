@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <cstddef> //c++头文件，包含一些重定义的类型，size_t
+#include <cstddef>
 #include <opencv2/opencv.hpp>
 
 #include "Marker.hpp"
@@ -10,14 +10,14 @@
 using namespace cv;
 using namespace std;
 
-//定义一个标记检测类：MarkerDetector
+
 class MarkerDetector
 {
 public:
   typedef vector<Point> PointsVector;
   typedef vector<PointsVector> ContoursVector;
 
-  MarkerDetector();
+  MarkerDetector(float markerSize3d);
 
   bool processFrame(const Mat& frame,Mat_<float>& camMatrix,Mat_<float>& distCoeff,vector<Marker>& markers);
 
@@ -34,7 +34,7 @@ public:
 
 public:
 
-  Size markerSize;
+  Size markerSize2d;
 
   ContoursVector m_contours;
   vector<Point3f> m_markerCorners3d;

@@ -20,15 +20,12 @@
 using namespace std;
 using namespace cv;
 
-MarkerDetector markerDetector;
+MarkerDetector *pMarkerDetector = NULL;
 
 Mat_<float>  camMatrix;
 Mat_<float>  distCoeff;
-int imagewidth;
-int imageheight;
 
 ros::Publisher pub_odom;
-ros::Publisher pub_pose;
 ros::Publisher pub_marker;
 ros::Publisher pub_tf;
 
@@ -153,8 +150,8 @@ void img_callback(const sensor_msgs::ImageConstPtr &img_msg)
   
   cv::Mat src = ptr->image;
   vector<Marker> markers;
-  if(markerDetector.processFrame(src,camMatrix, distCoeff,markers)) {
-    publishResult(markerDetector.m_markerCorners3d, markers[0].R, markers[0].T);
+  if(pMarkerDetector->processFrame(src,camMatrix, distCoeff,markers)) {
+    publishResult(pMarkerDetector->m_markerCorners3d, markers[0].R, markers[0].T);
   }
   
 }
@@ -164,9 +161,7 @@ int main(int argc,char *argv[])
   ros::init(argc, argv, "marker_location");
   ros::NodeHandle n("~");
 
-  //readParameters(n);
-    
-  //导入相机内参数
+  // 导入相机内参数
   double intrinsics[9] = {542.0642361133936, 0, 321.19682257337666,
 			  0, 541.1428792728802, 209.5818251264706,
 			  0, 0, 1};
@@ -177,17 +172,18 @@ int main(int argc,char *argv[])
   cout << camMatrix << endl;
   cout << distCoeff << endl;
 
-  imagewidth = 640;
-  imageheight = 480;
+  // 设置marker大小
+  float markerSize3d = 56.f; //157mm
+  pMarkerDetector = new MarkerDetector(markerSize3d);
 
   pub_odom = n.advertise<nav_msgs::Odometry>("/odom", 1);
-  //pub_pose = n.advertise<geometry_msgs::PoseStamped>("/pose", 1);//
   pub_marker = n.advertise<sensor_msgs::PointCloud>("/marker", 1000);
     
   ros::Subscriber sub_img = n.subscribe("/cam0/image_raw", 1, img_callback);
 
   
   ros::spin();
+  delete pMarkerDetector;
   return 0;
 }
 

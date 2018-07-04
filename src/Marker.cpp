@@ -25,6 +25,7 @@ Mat Marker::rotate(Mat in)//就是把矩阵旋转90度
           out.at<uchar>(i,j)=in.at<uchar>(in.cols-j-1,i);//at<uchar>用来指定某个位置的像素，同时指定数据类型。就是交换元素，怎么交换的？
         }
     }
+
   return out;
 }
 
